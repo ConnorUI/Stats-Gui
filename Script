@@ -1,0 +1,273 @@
+--[[
+
+Made By Cynt X#1069
+
+]]--
+
+local ServerUI = Instance.new("ScreenGui")
+local List = Instance.new("Frame")
+local UIGridLayout = Instance.new("UIGridLayout")
+local FpsCount = Instance.new("TextLabel")
+local PingCount = Instance.new("TextLabel")
+local ServerTime = Instance.new("TextLabel")
+local RealTime = Instance.new("TextLabel")
+
+ServerUI.Name = "ServerUI"
+ServerUI.Parent = game.CoreGui
+ServerUI.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+
+List.Name = "List"
+List.Parent = ServerUI
+List.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+List.BackgroundTransparency = 0.900
+List.BorderSizePixel = 0
+List.Position = UDim2.new(0, 10, 0, 334)
+List.Size = UDim2.new(0, 250, 0, 180)
+List.Visible = true
+
+UIGridLayout.Parent = List
+UIGridLayout.FillDirection = Enum.FillDirection.Vertical
+UIGridLayout.SortOrder = Enum.SortOrder.LayoutOrder
+UIGridLayout.VerticalAlignment = Enum.VerticalAlignment.Center
+UIGridLayout.CellPadding = UDim2.new(0, 10, 0, 10)
+UIGridLayout.CellSize = UDim2.new(0, 220, 0, 35)
+
+FpsCount.Name = "FpsCount"
+FpsCount.Parent = List
+FpsCount.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+FpsCount.BackgroundTransparency = 1.000
+FpsCount.BorderSizePixel = 0
+FpsCount.Size = UDim2.new(0, 200, 0, 50)
+FpsCount.Font = Enum.Font.SourceSansSemibold
+FpsCount.Text = "Fps:"
+FpsCount.TextColor3 = Color3.fromRGB(255, 255, 255)
+FpsCount.TextScaled = true
+FpsCount.TextSize = 14.000
+FpsCount.TextWrapped = true
+FpsCount.TextXAlignment = Enum.TextXAlignment.Left
+
+PingCount.Name = "PingCount"
+PingCount.Parent = List
+PingCount.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+PingCount.BackgroundTransparency = 1.000
+PingCount.BorderSizePixel = 0
+PingCount.Size = UDim2.new(0, 200, 0, 50)
+PingCount.Font = Enum.Font.SourceSansSemibold
+PingCount.Text = "Ping:"
+PingCount.TextColor3 = Color3.fromRGB(255, 255, 255)
+PingCount.TextScaled = true
+PingCount.TextSize = 14.000
+PingCount.TextWrapped = true
+PingCount.TextXAlignment = Enum.TextXAlignment.Left
+
+ServerTime.Name = "ServerTime"
+ServerTime.Parent = List
+ServerTime.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+ServerTime.BackgroundTransparency = 1.000
+ServerTime.BorderSizePixel = 0
+ServerTime.Size = UDim2.new(0, 200, 0, 50)
+ServerTime.Font = Enum.Font.SourceSansSemibold
+ServerTime.Text = "In Game:"
+ServerTime.TextColor3 = Color3.fromRGB(255, 255, 255)
+ServerTime.TextScaled = true
+ServerTime.TextSize = 14.000
+ServerTime.TextWrapped = true
+ServerTime.TextXAlignment = Enum.TextXAlignment.Left
+
+RealTime.Name = "RealTime"
+RealTime.Parent = List
+RealTime.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+RealTime.BackgroundTransparency = 1.000
+RealTime.BorderSizePixel = 0
+RealTime.Size = UDim2.new(0, 200, 0, 50)
+RealTime.Font = Enum.Font.SourceSansSemibold
+RealTime.Text = "Time:"
+RealTime.TextColor3 = Color3.fromRGB(255, 255, 255)
+RealTime.TextScaled = true
+RealTime.TextSize = 14.000
+RealTime.TextWrapped = true
+RealTime.TextXAlignment = Enum.TextXAlignment.Left
+
+local function MNXO_fake_script() -- ServerUI.Main
+	local script = Instance.new('LocalScript', ServerUI)
+
+	local UI = script.Parent.Parent.ServerUI
+	local List = UI.List
+	local FpsCounter = List.FpsCount
+	local PingCounter = List.PingCount
+	local ServerTime = List.ServerTime
+	local Timer = UI.Timer
+	local Plr = game:GetService("Players")
+	
+	-- Fps
+	
+	local t = tick()
+	local count = 0
+	local fps = 60
+	
+	game:GetService("RunService").RenderStepped:Connect(function()
+		count = count + 1
+		if tick()-t >= 1 then
+			fps = count
+			count = 0
+			t = tick()
+			FpsCounter.Text = "Fps: "..fps
+		end
+	end)
+	
+	-- Ping
+	
+	function GetPing()
+		local Ping = 300-((1/wait())*10)
+		if Ping < 1 then
+			Ping = 1
+		end
+		return math.floor(Ping)
+	end
+	
+	while wait() do
+		PingCounter.Text = "Ping: "..GetPing()
+	end
+end
+
+coroutine.wrap(MNXO_fake_script)()
+
+local function MOLMBTP_fake_script() -- ServerUI.Time
+	local script = Instance.new('Script', ServerUI)
+
+	wait()
+	
+	local Timer = script.Parent.Timer
+	local ServerT = script.Parent.List.ServerTime
+	local Sec = script.Parent.Time.Sec
+	local Min = script.Parent.Time.Min
+	local Hour = script.Parent.Time.Hour
+	
+	if Sec then
+		ServerT.Text = "In Game: ".."0"..Hour.Value..":".."0"..Min.Value..":".."0"..Sec.Value
+		Sec.Changed:Connect(function()
+			if Sec.Value >= 60 then
+				Min.Value = Min.Value + 1
+				Sec.Value = 0
+			end
+			
+			if Min.Value >= 60 then
+				Hour.Value = Hour.Value + 1
+				Min.Value = 0
+			end
+			
+			if Sec.Value >= 10 then
+				if Min.Value >= 10 then
+					if Hour.Value >=10 then
+						ServerT.Text = "In Game: "..Hour.Value..":"..Min.Value..":"..Sec.Value
+					end
+				end
+				
+				if Min.Value <= 10 then
+					if Hour.Value >=10 then
+						ServerT.Text = "In Game: "..Hour.Value..":".."0"..Min.Value..":"..Sec.Value
+					end
+	
+					if Hour.Value <= 10 then
+						ServerT.Text = "In Game: ".."0"..Hour.Value..":".."0"..Min.Value..":"..Sec.Value
+					end
+				end
+			end
+				
+			if Sec.Value <= 9 then
+				if Min.Value >= 10 then
+					if Hour.Value >=10 then
+						ServerT.Text = "In Game: "..Hour.Value..":"..Min.Value..":".."0"..Sec.Value
+					end
+	
+					if Hour.Value <= 9 then
+						ServerT.Text = "In Game: ".."0"..Hour.Value..":"..Min.Value..":".."0"..Sec.Value
+					end
+				end
+				
+				if Min.Value <= 9 then
+					if Hour.Value >=10 then
+						ServerT.Text = "In Game: "..Hour.Value..":".."0"..Min.Value..":"..Sec.Value
+					end
+	
+					if Hour.Value <= 9 then
+						ServerT.Text = "In Game: ".."0"..Hour.Value..":".."0"..Min.Value..":".."0"..Sec.Value
+					end
+				end
+			end
+		end)
+	end
+	
+	while true do
+		wait(1)
+		Sec.Value = Sec.Value + 1
+	end
+end
+
+coroutine.wrap(MOLMBTP_fake_script)()
+
+local function ROYCXVP_fake_script() -- ServerUI.RealTime
+	local script = Instance.new('LocalScript', ServerUI)
+
+	local Stamp = 906000490
+	local Timer = script.Parent.List.RealTime
+	
+	local function Time(T)
+		local T = T or tick()
+		local Hour = math.floor(T/3600) % 24
+		local Min = math.floor(T/60) % 60
+	
+		if Min <= 9 then
+			Min = "0"..Min
+		end
+		Timer.Text = "Time: "..Hour..":"..Min
+	end
+	
+	while true do
+		Time()
+		wait(0.01)
+	end
+end
+
+coroutine.wrap(ROYCXVP_fake_script)()
+
+local function IVOUD_fake_script() -- ServerUI.Drag
+	local script = Instance.new('LocalScript', ServerUI)
+
+	local UIS = game:GetService("UserInputService")
+	local frame = script.Parent.List
+	local dragToggle = nil
+	local dragSpeed = 0.4
+	local dragStart = nil
+	local startPos = nil
+	
+	local function updateInput(input)
+		local delta = input.Position - dragStart
+		local position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X,
+			startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+		game:GetService('TweenService'):Create(frame, TweenInfo.new(dragSpeed), {Position = position}):Play()
+	end
+	
+	frame.InputBegan:Connect(function(input)
+		if (input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch) then 
+			dragToggle = true
+			dragStart = input.Position
+			startPos = frame.Position
+			input.Changed:Connect(function()
+				if input.UserInputState == Enum.UserInputState.End then
+					dragToggle = false
+				end
+			end)
+		end
+	end)
+	
+	UIS.InputChanged:Connect(function(input)
+		if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+			if dragToggle then
+				updateInput(input)
+			end
+		end
+	end)
+end
+
+coroutine.wrap(IVOUD_fake_script)()
