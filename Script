@@ -1,28 +1,21 @@
---[[
-
-Made By Cynt X#1069
-
-]]--
-
-local ServerUI = Instance.new("ScreenGui")
+local StatsUI = Instance.new("ScreenGui")
 local List = Instance.new("Frame")
 local UIGridLayout = Instance.new("UIGridLayout")
 local FpsCount = Instance.new("TextLabel")
 local PingCount = Instance.new("TextLabel")
-local ServerTime = Instance.new("TextLabel")
 local RealTime = Instance.new("TextLabel")
 
-ServerUI.Name = "ServerUI"
-ServerUI.Parent = game.CoreGui
-ServerUI.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+StatsUI.Name = "StatsUI"
+StatsUI.Parent = game.CoreGui
+StatsUI.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
 List.Name = "List"
-List.Parent = ServerUI
+List.Parent = StatsUI
 List.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-List.BackgroundTransparency = 0.900
+List.BackgroundTransparency = 1.000
 List.BorderSizePixel = 0
-List.Position = UDim2.new(0, 10, 0, 334)
-List.Size = UDim2.new(0, 250, 0, 180)
+List.Position = UDim2.new(0.00595238106, 0, 0.416961133, 0)
+List.Size = UDim2.new(0, 200, 0, 140)
 List.Visible = true
 
 UIGridLayout.Parent = List
@@ -30,7 +23,7 @@ UIGridLayout.FillDirection = Enum.FillDirection.Vertical
 UIGridLayout.SortOrder = Enum.SortOrder.LayoutOrder
 UIGridLayout.VerticalAlignment = Enum.VerticalAlignment.Center
 UIGridLayout.CellPadding = UDim2.new(0, 10, 0, 10)
-UIGridLayout.CellSize = UDim2.new(0, 220, 0, 35)
+UIGridLayout.CellSize = UDim2.new(0, 180, 0, 35)
 
 FpsCount.Name = "FpsCount"
 FpsCount.Parent = List
@@ -60,20 +53,6 @@ PingCount.TextSize = 14.000
 PingCount.TextWrapped = true
 PingCount.TextXAlignment = Enum.TextXAlignment.Left
 
-ServerTime.Name = "ServerTime"
-ServerTime.Parent = List
-ServerTime.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-ServerTime.BackgroundTransparency = 1.000
-ServerTime.BorderSizePixel = 0
-ServerTime.Size = UDim2.new(0, 200, 0, 50)
-ServerTime.Font = Enum.Font.SourceSansSemibold
-ServerTime.Text = "In Game:"
-ServerTime.TextColor3 = Color3.fromRGB(255, 255, 255)
-ServerTime.TextScaled = true
-ServerTime.TextSize = 14.000
-ServerTime.TextWrapped = true
-ServerTime.TextXAlignment = Enum.TextXAlignment.Left
-
 RealTime.Name = "RealTime"
 RealTime.Parent = List
 RealTime.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
@@ -88,15 +67,13 @@ RealTime.TextSize = 14.000
 RealTime.TextWrapped = true
 RealTime.TextXAlignment = Enum.TextXAlignment.Left
 
-local function MNXO_fake_script() -- ServerUI.Main
-	local script = Instance.new('LocalScript', ServerUI)
+local function HNQC_fake_script() -- StatsUI.Main
+	local script = Instance.new('LocalScript', StatsUI)
 
-	local UI = script.Parent.Parent.ServerUI
+	local UI = script.Parent.Parent.StatsUI
 	local List = UI.List
 	local FpsCounter = List.FpsCount
 	local PingCounter = List.PingCount
-	local ServerTime = List.ServerTime
-	local Timer = UI.Timer
 	local Plr = game:GetService("Players")
 	
 	-- Fps
@@ -130,84 +107,10 @@ local function MNXO_fake_script() -- ServerUI.Main
 	end
 end
 
-coroutine.wrap(MNXO_fake_script)()
+coroutine.wrap(HNQC_fake_script)()
 
-local function MOLMBTP_fake_script() -- ServerUI.Time
-	local script = Instance.new('Script', ServerUI)
-
-	wait()
-	
-	local Timer = script.Parent.Timer
-	local ServerT = script.Parent.List.ServerTime
-	local Sec = script.Parent.Time.Sec
-	local Min = script.Parent.Time.Min
-	local Hour = script.Parent.Time.Hour
-	
-	if Sec then
-		ServerT.Text = "In Game: ".."0"..Hour.Value..":".."0"..Min.Value..":".."0"..Sec.Value
-		Sec.Changed:Connect(function()
-			if Sec.Value >= 60 then
-				Min.Value = Min.Value + 1
-				Sec.Value = 0
-			end
-			
-			if Min.Value >= 60 then
-				Hour.Value = Hour.Value + 1
-				Min.Value = 0
-			end
-			
-			if Sec.Value >= 10 then
-				if Min.Value >= 10 then
-					if Hour.Value >=10 then
-						ServerT.Text = "In Game: "..Hour.Value..":"..Min.Value..":"..Sec.Value
-					end
-				end
-				
-				if Min.Value <= 10 then
-					if Hour.Value >=10 then
-						ServerT.Text = "In Game: "..Hour.Value..":".."0"..Min.Value..":"..Sec.Value
-					end
-	
-					if Hour.Value <= 10 then
-						ServerT.Text = "In Game: ".."0"..Hour.Value..":".."0"..Min.Value..":"..Sec.Value
-					end
-				end
-			end
-				
-			if Sec.Value <= 9 then
-				if Min.Value >= 10 then
-					if Hour.Value >=10 then
-						ServerT.Text = "In Game: "..Hour.Value..":"..Min.Value..":".."0"..Sec.Value
-					end
-	
-					if Hour.Value <= 9 then
-						ServerT.Text = "In Game: ".."0"..Hour.Value..":"..Min.Value..":".."0"..Sec.Value
-					end
-				end
-				
-				if Min.Value <= 9 then
-					if Hour.Value >=10 then
-						ServerT.Text = "In Game: "..Hour.Value..":".."0"..Min.Value..":"..Sec.Value
-					end
-	
-					if Hour.Value <= 9 then
-						ServerT.Text = "In Game: ".."0"..Hour.Value..":".."0"..Min.Value..":".."0"..Sec.Value
-					end
-				end
-			end
-		end)
-	end
-	
-	while true do
-		wait(1)
-		Sec.Value = Sec.Value + 1
-	end
-end
-
-coroutine.wrap(MOLMBTP_fake_script)()
-
-local function ROYCXVP_fake_script() -- ServerUI.RealTime
-	local script = Instance.new('LocalScript', ServerUI)
+local function BYJF_fake_script() -- StatsUI.Time
+	local script = Instance.new('LocalScript', StatsUI)
 
 	local Stamp = 906000490
 	local Timer = script.Parent.List.RealTime
@@ -229,10 +132,10 @@ local function ROYCXVP_fake_script() -- ServerUI.RealTime
 	end
 end
 
-coroutine.wrap(ROYCXVP_fake_script)()
+coroutine.wrap(BYJF_fake_script)()
 
-local function IVOUD_fake_script() -- ServerUI.Drag
-	local script = Instance.new('LocalScript', ServerUI)
+local function KUJB_fake_script() -- StatsUI.Drag
+	local script = Instance.new('LocalScript', StatsUI)
 
 	local UIS = game:GetService("UserInputService")
 	local frame = script.Parent.List
@@ -270,4 +173,30 @@ local function IVOUD_fake_script() -- ServerUI.Drag
 	end)
 end
 
-coroutine.wrap(IVOUD_fake_script)()
+coroutine.wrap(KUJB_fake_script)()
+
+local function HPTJHR_fake_script() -- StatsUI.Startup
+	local script = Instance.new('LocalScript', StatsUI)
+
+	local Frame = script.Parent.List
+	local StartSound = Instance.new("Sound")
+	local TweenService = game:GetService("TweenService")
+	local TweenInf = TweenInfo.new(2, Enum.EasingStyle.Sine, Enum.EasingDirection.Out)
+	local Prop = {
+		BackgroundTransparency = 0.7
+	}
+	
+	local Animation = TweenService:Create(Frame, TweenInf, Prop)
+	
+	StartSound.Parent = script.Parent.Parent.StatsUI
+	StartSound.SoundId = "rbxassetid://8503529943"
+	StartSound.Volume = 10
+	
+	Animation:Play()
+	
+	wait(0.3)
+	
+	StartSound:Play()
+end
+
+coroutine.wrap(HPTJHR_fake_script)()
