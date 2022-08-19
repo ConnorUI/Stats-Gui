@@ -4,10 +4,17 @@ local UIGridLayout = Instance.new("UIGridLayout")
 local FpsCount = Instance.new("TextLabel")
 local PingCount = Instance.new("TextLabel")
 local RealTime = Instance.new("TextLabel")
+local StartSound = Instance.new("Sound")
 
 StatsUI.Name = "StatsUI"
 StatsUI.Parent = game.CoreGui
 StatsUI.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+
+StartSound.Parent = StatsUI
+StartSound.SoundId = "rbxassetid://8503531171"
+StartSound.Volume = 5
+
+StartSound:Play()
 
 List.Name = "List"
 List.Parent = StatsUI
@@ -179,7 +186,6 @@ local function HPTJHR_fake_script() -- StatsUI.Startup
 	local script = Instance.new('LocalScript', StatsUI)
 
 	local Frame = script.Parent.List
-	local StartSound = Instance.new("Sound")
 	local TweenService = game:GetService("TweenService")
 	local TweenInf = TweenInfo.new(2, Enum.EasingStyle.Sine, Enum.EasingDirection.Out)
 	local Prop = {
@@ -188,15 +194,7 @@ local function HPTJHR_fake_script() -- StatsUI.Startup
 	
 	local Animation = TweenService:Create(Frame, TweenInf, Prop)
 	
-	StartSound.Parent = script.Parent.Parent.StatsUI
-	StartSound.SoundId = "rbxassetid://8503529943"
-	StartSound.Volume = 10
-	
 	Animation:Play()
-	
-	wait(0.3)
-	
-	StartSound:Play()
 end
 
 coroutine.wrap(HPTJHR_fake_script)()
